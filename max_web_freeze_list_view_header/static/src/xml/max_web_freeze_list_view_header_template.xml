@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
-    <t t-extend="ListView">
-        <t t-jquery=".o_list_view" t-operation="append">
-            <script type="text/javascript" src="/max_web_freeze_list_view_header/static/src/js/max_web_freeze_list_view_header.js"></script>
-        </t>
-    </t>
-</templates>
