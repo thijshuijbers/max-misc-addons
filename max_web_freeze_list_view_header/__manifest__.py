@@ -10,15 +10,12 @@
         To freeze list view's header, very helpful when dealing with many record.
     """,
 
-    'author': "Vnsoft, MAXodoo",
+    'author': "MAXodoo, Vnsoft, osbzr",
     'website': "http://www.maxodoo.com",
     'category': 'web',
     'version': '10.0.0.1',
     'depends': ['web','base'],
     'data': [
         'views/max_web_freeze_list_view_header_view.xml',
-    ],
-    'qweb': [
-        "static/src/xml/max_web_freeze_list_view_header_template.xml",
     ],
 }

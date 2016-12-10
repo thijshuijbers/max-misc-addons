@@ -1,15 +1,41 @@
-;(function ($, window, undefined){
-    var one2many_length = $('.o_form_field.o_form_field_one2many').length;
-    var many2many_length = $('.o_form_field.o_form_field_many2many').length;
-    var scrollArea = $(".o_content")[0];
-    if(scrollArea && one2many_length == 0 && many2many_length == 0) {
-        $('table.o_list_view').each(function () {
-            $(this).stickyTableHeaders({scrollableArea: scrollArea});
-        });
-        $(window).resize(function() {
-            $('table.o_list_view').each(function () {
-                $(this).stickyTableHeaders({scrollableArea: scrollArea});
-            });
-        });
-    }
-})(jQuery,window);
+odoo.define('max_web_freeze_list_View_header', function (require) {
+'use strict';
+
+    var ListView = require('web.ListView');
+
+    ListView.include({
+        load_list: function () {
+            var self = this;
+            this._super.apply(this, arguments);
+            var form_field_length = self.$el.parents('.o_form_field').length;
+            var scrollArea = $(".o_content")[0];
+            function do_freeze () {
+                self.$el.find('table.o_list_view').each(function () {
+                    $(this).stickyTableHeaders({scrollableArea: scrollArea});
+                });
+            }
+
+            if (form_field_length == 0) {
+                do_freeze();
+                $(window).unbind('resize', do_freeze).bind('resize', do_freeze);
+            }
+            return $.when();
+        },
+    })
+
+    ListView.Groups.include({
+        render_groups: function () {
+            var self = this;
+            var placeholder = this._super.apply(this, arguments);
+            var grouping_freezer = document.createElement("script");
+
+            grouping_freezer.innerText = "$('.o_group_header').click(function () { setTimeout('" +
+                "var scrollArea = $(\".o_content\")[0]; " +
+                "$(\"table.o_list_view\").each(function () { $(this).stickyTableHeaders({scrollableArea: scrollArea}); }); " +
+                "',250); })";
+
+            placeholder.appendChild(grouping_freezer);
+            return placeholder;
+        },
+    });
+});
