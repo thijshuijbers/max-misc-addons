@@ -14,7 +14,7 @@
     'website': "http://www.maxodoo.com",
     'category': 'web',
     'version': '10.0.0.1',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'data': [
         'data/max_web_custom_branding_data.xml',
         'views/max_web_custom_branding_view.xml',
