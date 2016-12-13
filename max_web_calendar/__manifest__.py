@@ -7,7 +7,8 @@
     """,
 
     'description': """
-        To enhance offical web_calendar mudule.
+        To make specific color as color field setting of the event and
+        to support HTML tags in display setting of the event in calendar view.
     """,
 
     'author': "MAXodoo",
