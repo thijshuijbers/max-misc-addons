@@ -25,7 +25,8 @@ odoo.define('max_web_calendar', function (require) {
         },
 
         // to support html format in event title
-        // to fix translation issue of selection type fields
+        // to fix translation issue of selection and boolean type fields
+        // to avoid showing false in nullable fields
         event_data_transform: function(evt) {
             var self = this;
             var date_start;
@@ -81,7 +82,17 @@ odoo.define('max_web_calendar', function (require) {
                             function(name){ return name[0] === value;})[1];
                     }
                     else {
-                        temp_ret[fieldname] = value;
+                        // to fix translation issue of boolean type fields
+                        if (self.fields[fieldname].type === 'boolean') {
+                            temp_ret[fieldname] = _t(value);
+                        }
+                        // to avoid showing false in nullable fields
+                        else if (value === false) {
+                            temp_ret[fieldname] = null;
+                        }
+                        else {
+                            temp_ret[fieldname] = value;
+                        }
                     }
                     // add escape process to avoid html tag conflict in field data.
                     //res_computed_text = res_computed_text.replace("["+fieldname+"]",temp_ret[fieldname]);
