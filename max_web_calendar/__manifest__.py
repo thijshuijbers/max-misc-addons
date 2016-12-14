@@ -9,7 +9,8 @@
     'description': """
         Set certain color for events based on color field value.
         Support HTML tags in display setting of the event in calendar view.
-        Fix translation issue of selection type fields.
+        Fix translation issue of selection and boolean type fields.
+        Avoid showing false in nullable fields
     """,
 
     'author': "MAXodoo",
