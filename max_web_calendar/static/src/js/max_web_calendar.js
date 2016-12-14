@@ -18,15 +18,33 @@ odoo.define('max_web_calendar', function (require) {
     }
 
     CalendarView.include({
-        // to calculate a certain color based on the key value of color field
+        init: function () {
+            this._super.apply(this, arguments);
+
+            // add a new attribute for event hint in calendar view
+            var attrs = this.fields_view.arch.attrs;
+            this.tooltip_field = attrs.tooltip;
+        },
+
+        start: function () {
+            var self = this;
+            var res =  self._super.apply(this, arguments).then(function() {
+                // make the event tooltips working
+                self.$('.max_web_calendar_event_tooltip').tooltip();
+            });
+            return res;
+        },
+
+        // calculate a certain color based on the key value of color field
         get_color: function(key) {
             var hash = hashCode(key);
             return hash % 24 + 1;
         },
 
-        // to support html format in event title
-        // to fix translation issue of selection and boolean type fields
-        // to avoid showing false in nullable fields
+        // support html format in event title
+        // fix translation issue of selection and boolean type fields
+        // avoid showing false in nullable fields
+        // attach event tooltip on the title of events
         event_data_transform: function(evt) {
             var self = this;
             var date_start;
@@ -44,6 +62,8 @@ odoo.define('max_web_calendar', function (require) {
                 date_start = time.auto_str_to_date(evt[this.date_start].split(' ')[0],'start');
                 date_stop = this.date_stop ? time.auto_str_to_date(evt[this.date_stop].split(' ')[0],'start') : null;
             }
+
+            var event_tooltip = null
 
             if (this.info_fields) {
                 var temp_ret = {};
@@ -76,7 +96,7 @@ odoo.define('max_web_calendar', function (require) {
                             throw new Error("Incomplete data received from dataset for record " + evt.id);
                         }
                     }
-                    // to fix translation issue of selection type fields
+                    // fix translation issue of selection type fields
                     else if (_.contains(["selection"], self.fields[fieldname].type)) {
                         temp_ret[fieldname] = _.find(self.fields[fieldname].selection,
                             function(name){ return name[0] === value;})[1];
@@ -93,6 +113,10 @@ odoo.define('max_web_calendar', function (require) {
                         else {
                             temp_ret[fieldname] = value;
                         }
+                    }
+                    // get tooltip of event
+                    if (fieldname === self.tooltip_field) {
+                        event_tooltip = temp_ret[fieldname];
                     }
                     // add escape process to avoid html tag conflict in field data.
                     //res_computed_text = res_computed_text.replace("["+fieldname+"]",temp_ret[fieldname]);
@@ -152,6 +176,11 @@ odoo.define('max_web_calendar', function (require) {
                     }
                     the_title = the_title_avatar + the_title;
                 }
+            }
+
+            // attach event tooltip on the title of events
+            if (event_tooltip != null) {
+                the_title = '<span class="max_web_calendar_event_tooltip" title="' + event_tooltip + '">' + the_title + '</span>';
             }
 
             if (!date_stop && date_delay) {
