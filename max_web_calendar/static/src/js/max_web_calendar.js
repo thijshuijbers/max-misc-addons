@@ -18,12 +18,14 @@ odoo.define('max_web_calendar', function (require) {
     }
 
     CalendarView.include({
+        // to calculate a certain color based on the key value of color field
         get_color: function(key) {
-            var v = hashCode(key);
-            return v % 24 + 1;
-            //return (key + 10) % 24 + 1;
+            var hash = hashCode(key);
+            return hash % 24 + 1;
         },
 
+        // to support html format in event title
+        // to fix translation issue of selection type fields
         event_data_transform: function(evt) {
             var self = this;
             var date_start;
@@ -73,9 +75,15 @@ odoo.define('max_web_calendar', function (require) {
                             throw new Error("Incomplete data received from dataset for record " + evt.id);
                         }
                     }
+                    // to fix translation issue of selection type fields
+                    else if (_.contains(["selection"], self.fields[fieldname].type)) {
+                        temp_ret[fieldname] = _.find(self.fields[fieldname].selection,
+                            function(name){ return name[0] === value;})[1];
+                    }
                     else {
                         temp_ret[fieldname] = value;
                     }
+                    // add escape process to avoid html tag conflict in field data.
                     //res_computed_text = res_computed_text.replace("["+fieldname+"]",temp_ret[fieldname]);
                     res_computed_text = res_computed_text.replace("["+fieldname+"]",_.escape(temp_ret[fieldname]));
                 });
@@ -88,11 +96,14 @@ odoo.define('max_web_calendar', function (require) {
                     var res_text= [];
                     _.each(temp_ret, function(val,key) {
                         if( typeof(val) === 'boolean' && val === false ) { }
+                        // add escape process to avoid html tag conflict in field data.
                         //else { res_text.push(val); }
                         else { res_text.push(_.escape(val)); }
                     });
                     the_title = res_text.join(', ');
                 }
+
+                // remove escape process here to enable html tag format for the display title of events
                 //the_title = _.escape(the_title);
 
                 var the_title_avatar = '';
