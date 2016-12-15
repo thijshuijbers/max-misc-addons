@@ -24,23 +24,35 @@ odoo.define('max_web_calendar', function (require) {
             // add a new attribute for event hint in calendar view
             var attrs = this.fields_view.arch.attrs;
             this.tooltip_field = typeof(attrs.tooltip) == 'undefined' ? '': attrs.tooltip;
+            this.color_type = typeof(attrs.color_type) == 'undefined' ? 'random': attrs.color_type;
         },
 
-        start: function () {
-            var self = this;
-            var res =  self._super.apply(this, arguments).then(function() {
-                // make the event tooltips working
-                if (self.tooltip_field.length) {
-                    self.$('.max_web_calendar_event_tooltip').tooltip();
-                }
-            });
-            return res;
+        get_fc_init_options:function () {
+            var options = this._super.apply(this, arguments);
+            if(this.tooltip_field.length){
+                return $.extend({}, options, {
+                    eventRender:function (event, element, view) {
+                        options.eventRender(event, element, view);
+
+                        // set tooltip on event
+                        $(element).attr('title',$(element).find('.max_web_calendar_event_tooltip').attr('tooltip-text'));
+                    }
+                });
+            }
+            else{
+                return options;
+            }
         },
 
         // calculate a certain color based on the key value of color field
         get_color: function(key) {
-            var hash = hashCode(key);
-            return hash % 24 + 1;
+            if(this.color_type === 'certain'){
+                var hash = hashCode(key);
+                return hash % 24 + 1;
+            }
+            else {
+                return this._super.apply(this, arguments);
+            }
         },
 
         // support html format in event title
@@ -182,7 +194,7 @@ odoo.define('max_web_calendar', function (require) {
 
             // attach event tooltip on the title of events
             if (self.tooltip_field.length && event_tooltip) {
-                the_title = '<span class="max_web_calendar_event_tooltip" title="' + event_tooltip + '">' + the_title + '</span>';
+                the_title = '<span class="max_web_calendar_event_tooltip" tooltip-text="' + event_tooltip + '">' + the_title + '</span>';
             }
 
             if (!date_stop && date_delay) {
