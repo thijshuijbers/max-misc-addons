@@ -12,6 +12,9 @@
         Fix translation issue of selection and boolean type fields.
         Avoid showing false in nullable fields
         Show tooltip for each event in calendar view.
+
+        To enable tooltip feature, please add 'tooltip="tooltip_field_name"' attribute and
+        '<field name="tooltip_field_name"/>' into <calendar> tag.
     """,
 
     'author': "MAXodoo",
