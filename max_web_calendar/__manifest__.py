@@ -13,9 +13,10 @@
         Avoid showing false in nullable fields
         Show tooltip for each event in calendar view.
 
-        To enable certain color feature, please add 'color_type === "certain"' attribute into <calendar> tag.
-        To enable tooltip feature, please add 'tooltip="tooltip_field_name"' attribute and
-        '<field name="tooltip_field_name"/>' into <calendar> tag.
+        To enable certain color feature, please add 'color_type="certain"' attribute into <calendar> tag.
+        To enable tooltip feature, please add 'tooltip="tooltip_field_name"' attribute into <calendar> tag and
+        '<field name="tooltip_field_name"/>' in calendar fields list.
+        You need to replace tooltip_field_name with your field name.
     """,
 
     'author': "MAXodoo",

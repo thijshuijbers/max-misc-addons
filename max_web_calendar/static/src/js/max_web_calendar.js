@@ -9,7 +9,7 @@ odoo.define('max_web_calendar', function (require) {
 
     function hashCode(value){
         var str = String(value);
-        var h = 0, off = 0;
+        var h = 0;
         var len = str.length;
         for(var i = 0; i < len; i++){
             h = h + str.charCodeAt(i) * (i+1);
@@ -27,7 +27,7 @@ odoo.define('max_web_calendar', function (require) {
             this.color_type = typeof(attrs.color_type) == 'undefined' ? 'random': attrs.color_type;
         },
 
-        get_fc_init_options:function () {
+        get_fc_init_options: function () {
             var options = this._super.apply(this, arguments);
             if(this.tooltip_field.length){
                 return $.extend({}, options, {
@@ -35,18 +35,18 @@ odoo.define('max_web_calendar', function (require) {
                         options.eventRender(event, element, view);
 
                         // set tooltip on event
-                        $(element).attr('title',$(element).find('.max_web_calendar_event_tooltip').attr('tooltip-text'));
+                        $(element).attr('title', $(element).find('.max_web_calendar_event_tooltip').attr('tooltip-text'));
                     }
                 });
             }
-            else{
+            else {
                 return options;
             }
         },
 
         // calculate a certain color based on the key value of color field
         get_color: function(key) {
-            if(this.color_type === 'certain'){
+            if(this.color_type === 'certain') {
                 var hash = hashCode(key);
                 return hash % 24 + 1;
             }
