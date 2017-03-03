@@ -29,10 +29,8 @@ odoo.define('max_web_freeze_list_View_header', function (require) {
             var placeholder = this._super.apply(this, arguments);
             var grouping_freezer = document.createElement("script");
 
-            grouping_freezer.innerText = "$('.o_group_header').click(function () { setTimeout('" +
-                "var scrollArea = $(\".o_content\")[0]; " +
-                "$(\"table.o_list_view\").each(function () { $(this).stickyTableHeaders({scrollableArea: scrollArea, " +
-                "fixedOffset: 0.1}); }); ',250); })";
+            grouping_freezer.innerText = "$('.o_group_header').click(function () {"
+                + " setTimeout(function () { $(window).resize(); }, 200); })";
 
             placeholder.appendChild(grouping_freezer);
             return placeholder;
