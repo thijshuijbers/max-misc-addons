@@ -10,38 +10,52 @@
 Example:
 ========
 
-Add reference to 'depends' of __manifest__.py in your module:
+1. Add reference to 'depends' of __manifest__.py in your module:
 
 'depends': ['base', 'max_base_multi_image'],
 
 
+2. Column Definition:
 
-Column Definition:
 
-
-    your_image_ids = fields.One2many(
+    first_image_ids = fields.One2many(
         comodel_name='max.base.multi.image',
         inverse_name='owner_id',
-        string='Your Images',
-        domain=lambda self: [('owner_model', '=', self._name), ('owner_field', '=', 'your_image_ids')],
+        string='First Images',
+        domain=lambda self: [('owner_model', '=', self._name), ('owner_field', '=', 'first_image_ids')],
         copy=True)
 
-You can define multiple above column in same model.
+    second_image_ids = fields.One2many(
+        comodel_name='max.base.multi.image',
+        inverse_name='owner_id',
+        string='Second Images',
+        domain=lambda self: [('owner_model', '=', self._name), ('owner_field', '=', 'second_image_ids')],
+        copy=True)
 
 
-View Definition
+As you can see, it is possible to define multiple images column in same model.
 
 
-    <field
-        name="your_image_ids"
+3. Form View Definition
+
+
+    <field name="first_image_ids"
         context="{
             'default_owner_model': 'your.model.name',
             'default_owner_id': id,
-            'default_owner_field': 'your_image_ids',
+            'default_owner_field': 'first_image_ids',
+        }"
+        mode="kanban"/>
+    <field name="second_image_ids"
+        context="{
+            'default_owner_model': 'your.model.name',
+            'default_owner_id': id,
+            'default_owner_field': 'second_image_ids',
         }"
         mode="kanban"/>
 
 
+Done!
 Wish you enjoy this!
 
     """,

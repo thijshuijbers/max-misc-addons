@@ -18,18 +18,21 @@ class Image(models.Model):
 
     @api.model
     def create(self, vals):
-        tools.image_resize_images(vals)
         if vals.get('image'):
-            vals['file_size'] = len(vals.get('image'))
+            vals['file_size'] = len(vals.get('image')) * 0.75
+            vals['image_medium'] = tools.image_resize_image_medium(vals.get('image'), avoid_if_small=True)
         else:
             vals['file_size'] = 0
+            vals['image_medium'] = False
         return super(Image, self).create(vals)
 
     @api.multi
     def write(self, vals):
-        tools.image_resize_images(vals)
-        if vals.get('image'):
-            vals['file_size'] = len(vals.get('image'))
-        else:
-            vals['file_size'] = 0
+        if 'image' in vals.keys():
+            if vals.get('image'):
+                vals['file_size'] = len(vals.get('image')) * 0.75
+                vals['image_medium'] = tools.image_resize_image_medium(vals.get('image'), avoid_if_small=True)
+            else:
+                vals['file_size'] = 0
+                vals['image_medium'] = False
         return super(Image, self).write(vals)
