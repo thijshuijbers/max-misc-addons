@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="max_base_multi_image_form_view" model="ir.ui.view">
+            <field name="name">max.base.multi.image.form</field>
+            <field name="model">max.base.multi.image</field>
+            <field name="arch" type="xml">
+            <form string="Image">
+                <sheet>
+                    <group>
+                        <field name="image" widget="image" filename="name"/>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="owner_field" invisible="1"/>
+                        <field name="owner_id" invisible="1"/>
+                        <field name="owner_model" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+            </field>
+        </record>
+        <record id="max_base_multi_image_kanban_view" model="ir.ui.view">
+            <field name="name">max.base.multi.image.kanban</field>
+            <field name="model">max.base.multi.image</field>
+            <field name="arch" type="xml">
+                <kanban string="Image">
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <a t-if="! read_only_mode" type="delete" style="position: absolute; right: 0; padding: 4px; diplay: inline-block">X</a>
+                                    <div class="o_kanban_image">
+                                        <img t-if="read_only_mode" t-att-src="kanban_image('max.base.multi.image', 'image_medium', record.id.value)"/>
+                                        <img t-if="!read_only_mode" t-att-src="kanban_image('max.base.multi.image', 'image', record.id.value)"/>
+                                    </div>
+                                    <div style="overflow:hidden; text-overflow:ellipsis; width: 225px; word-wrap:break-word; word-break:normal; float:left; padding-left:10px;">
+                                        <ul>
+                                            <li><strong><field name="name"/></strong></li>
+                                            <li><field name="file_size"/></li>
+                                            <li><field name="description"/></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    </data>
+</odoo>
