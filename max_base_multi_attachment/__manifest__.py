@@ -43,16 +43,17 @@ As you can see, it is possible to define multiple attachments column in same mod
             'default_owner_model': 'your.model.name',
             'default_owner_id': id,
             'default_owner_field': 'first_attachment_ids',
-        }"
-        mode="kanban"/>
+        }"/>
     <field name="second_attachment_ids"
         context="{
             'default_owner_model': 'your.model.name',
             'default_owner_id': id,
             'default_owner_field': 'second_attachment_ids',
         }"
-        mode="kanban"/>
+        widget="many2many_kanban"/>
 
+
+You can use Kanban widget or not.
 
 Done!
 Wish you enjoy this!

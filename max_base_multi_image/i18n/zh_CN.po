@@ -76,7 +76,7 @@ msgstr "中等尺寸图像"
 #. module: max_base_multi_image
 #: model:ir.model.fields,field_description:max_base_multi_image.field_max_base_multi_image_name
 msgid "Name"
-msgstr "名字"
+msgstr "名称"
 
 #. module: max_base_multi_image
 #: model:ir.model.fields,field_description:max_base_multi_image.field_max_base_multi_image_owner_field

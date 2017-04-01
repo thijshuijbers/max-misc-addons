@@ -80,7 +80,7 @@ msgstr "最后更新时间"
 #. module: max_base_multi_attachment
 #: model:ir.model.fields,field_description:max_base_multi_attachment.field_max_base_multi_attachment_name
 msgid "Name"
-msgstr "名字"
+msgstr "名称"
 
 #. module: max_base_multi_attachment
 #: model:ir.model.fields,field_description:max_base_multi_attachment.field_max_base_multi_attachment_owner_field
